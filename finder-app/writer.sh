@@ -13,6 +13,12 @@ fi
 writestr="$2"
 
 dir=$(dirname "$writefile")
-mkdir -p "$dir"
+if ! mkdir -p "$dir"; then
+  echo "Error: could not create directory $dir"
+  exit 1
+fi
 
-echo "$writestr" > "$writefile"
+if ! echo "$writestr" > "$writefile"; then
+  echo "Error: could not write to file $writefile"
+  exit 1
+fi
