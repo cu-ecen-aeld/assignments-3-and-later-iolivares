@@ -22,10 +22,10 @@ bool do_system(const char *cmd)
      *   and return a boolean true if the system() call completed with success
      *   or false() if it returned a failure
      */
-    int ret = system(cmd);
-    if (ret == -1) return false;
+    int status = system(cmd);
+    if (status == -1) return false;
 
-    return true;
+    return (WIFEXITED(status) && WEXITSTATUS(status) == EXIT_SUCCESS);
 }
 
 /**
@@ -89,7 +89,7 @@ bool do_exec(int count, ...)
     {
         // Check child return status. If the command passed in execv fails, the exit status will be non-zero,
         // e.g. when a command doesn't specify the full path.
-        return WEXITSTATUS(status) == 0; 
+        return WEXITSTATUS(status) == EXIT_SUCCESS; 
     }
 
     return false; // If the child did not exit normally
@@ -155,7 +155,7 @@ bool do_exec_redirect(const char *outputfile, int count, ...)
     }
     else if (WIFEXITED(status))
     {
-        return WEXITSTATUS(status) == 0;
+        return WEXITSTATUS(status) == EXIT_SUCCESS;
     }
 
     return false;
