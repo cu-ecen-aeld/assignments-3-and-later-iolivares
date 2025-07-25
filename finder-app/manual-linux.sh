@@ -110,11 +110,12 @@ sudo mknod -m 600 ${OUTDIR}/rootfs/dev/console c 5 1
 echo 
 cd $FINDER_APP_DIR
 make clean
-make
+make CROSS_COMPILE=${CROSS_COMPILE}
 
 # TODO: Copy the finder related scripts and executables to the /home directory
 # on the target rootfs
-cp -v ./writer ./autorun-qemu.sh ./finder-test.sh ${OUTDIR}/rootfs/home
+cp -v ./writer ./finder.sh ./finder-test.sh ./autorun-qemu.sh ${OUTDIR}/rootfs/home/
+cp -r ./conf/ ${OUTDIR}/rootfs/home/
 
 # TODO: Chown the root directory
 cd ${OUTDIR}/rootfs
